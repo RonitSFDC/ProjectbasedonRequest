@@ -1,0 +1,11 @@
+.THIS{
+    max-width: 80rem !important;
+    width: 80% !important;
+    height: auto;
+    max-height: 100%;
+    
+}
+.slds-modal__content{
+    height:initial !important;
+    max-height:190px !important;
+    }

@@ -1,0 +1,64 @@
+<template>
+    <div class="slds-var-p-around_small" style="background-color: #f8f8f8">
+        <lightning-record-edit-form
+              record-id={accRecId}
+              record-type-id={recordTypeId}
+              object-api-name="Account"
+              onsuccess={handleSucess}>
+              <div class="slds-section slds-is-open">
+                <div class="slds-section__title slds-theme_shade" style="background-color: #cfeef8;">
+                  <h3>
+                      <span class="slds-truncate slds-p-horizontal_small" title="Deduction Details">Update Security Clearance Details - {name}</span>
+                  </h3>
+                </div>
+                <div class="slds-section__content">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                          <lightning-input-field field-name="cm_Gender__pc" required="true"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                          <lightning-input-field field-name="cm_Birthdate__pc"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                          <lightning-input-field field-name="cm_Place_Of_Birth__pc"></lightning-input-field>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                      <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                        <lightning-input-field field-name="ns_Country_of_Residence__pc"></lightning-input-field>
+                      </div>
+                      <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                        <lightning-input-field field-name="cm_Nationality__pc"></lightning-input-field>
+                      </div>
+                      <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                        <lightning-input-field field-name="cm_Passport_Number__pc"></lightning-input-field>
+                      </div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                      <lightning-input-field field-name="cm_Passport_Expiry_Date__pc"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                      <lightning-input-field field-name="Visa_No__pc"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                      <lightning-input-field field-name="cm_Visa_Expiry_Date__pc"></lightning-input-field>
+                    </div>
+                    </div>
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                    <lightning-input-field field-name="UID__pc"></lightning-input-field>
+                  </div>
+                  <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                    <lightning-input-field field-name="cm_National_ID_No__pc"></lightning-input-field>
+                  </div>
+                  <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                    <lightning-input-field field-name="cm_National_ID_Expiry_Date__pc"></lightning-input-field>
+                  </div>
+              </div>
+                </div>
+            </div>
+          <lightning-button class="slds-align_absolute-center" variant="brand" type="submit" label="Update Account Details"></lightning-button>
+        </lightning-record-edit-form>
+    </div>
+</template>

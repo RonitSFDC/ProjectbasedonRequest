@@ -1,0 +1,44 @@
+<template>
+    <div class="slds-box slds-p-top_large slds-p-bottom_large" style="background-color: white;">
+        <lightning-input type="file"
+                         label="Attachment"
+                         onchange={handleFileUploaded}
+                         multiple>
+        </lightning-input>
+        <div class="slds-grid slds-wrap">
+            <template for:each={filesUploaded} for:item="file">
+                    <div key={file.Title} class="slds-col slds-size_2-of-5 slds-float_left">
+                        <lightning-input label="File Name" value={file.Title} disabled></lightning-input>
+                    </div>
+                    <div key={file.Title} class="slds-col slds-size_2-of-5 slds-float_left">
+                        <lightning-combobox
+                            key={file.Title}
+                            data-id={file.Title}
+                            title={file.indexNum}
+                            label="Type"
+                            value={file.Type}
+                            placeholder="None"
+                            options={options}
+                            onchange={handleChange}
+                            required>
+                        </lightning-combobox>
+                        <template if:true={file.showOtherInput}>
+                            <lightning-input type="text" label="Other Input" title={file.indexNum} name="otherInput" variant="label-hidden" onchange={handleOtherInputChange}>
+                            </lightning-input>
+                        </template>
+                    </div>
+                   
+                    <div key={file.Title} class="slds-col slds-size_1-of-5 slds-float_left">
+                        <br/>
+                            <lightning-button-icon data-id={file.Title} icon-name="utility:delete"    alternative-text="Delete"   class="slds-m-left_xx-small" title="Delete" onclick={handleDelete}></lightning-button-icon>
+                    </div>
+            </template>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <lightning-button variant="brand" label="Attach File(s)" onclick={attachFiles} class="slds-p-top_small"> </lightning-button>
+        <br/>
+        <br/>
+    </div>
+</template>

@@ -1,0 +1,108 @@
+<template>
+  <div class="slds-var-p-around_small" style="background-color: #f8f8f8">
+    <div class="slds-section slds-is-open">
+        <div class="slds-section__title" style="background-color: #cfeef8;">
+          <h3>
+            <span class="slds-truncate slds-p-horizontal_small" title="Deduction Details">Upload Security Clearance Documents - {name}</span>
+          </h3>
+        </div>
+        <div class="slds-section__content">
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" >Action</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate">Name</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate">Uploaded Doc Name</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" >Description</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" >Created Date</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" >Status</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+              <template if:true={fileLists} for:each={fileLists} for:item="fileList" for:index="index">
+                <tr class="slds-hint-parent" key={fileList.docId}>
+                  <th data-label="" >
+                      <div class="slds-truncate">
+                        <template if:true={fileList.isPreview}>
+                            <lightning-button variant="brand" label="Replace" title="Submit" onclick={handleRepalce} class="slds-m-left_x-small" data-index={index}></lightning-button>
+<!--                             <c-openfile-modal-template data-name="repalce" document-name={fileList.documentName} acc-id={accId}></c-openfile-modal-template>
+ -->                           &nbsp;
+                            <lightning-button label="Preview" 
+                                  variant="brand"
+                                  data-id={fileList.docId}
+                                  onclick={previewHandler}
+                              ></lightning-button>
+                          </template>
+                        <template if:false={fileList.isPreview}>
+                            <lightning-button variant="brand" label="Upload" title="Submit" onclick={handleUpload} class="slds-m-left_x-small" data-index={index}></lightning-button>                         
+<!--                             <c-openfile-modal-template data-name="upload" document-name={fileList.documentName} acc-id={accId}></c-openfile-modal-template>
+ -->                        </template>  
+                      </div>
+                  </th>
+                  <td data-label="">
+                    <div class="slds-truncate" data-name="documentName">{fileList.documentName}</div>
+                  </td>
+                 <td data-label="">
+                    <div class="slds-truncate" >{fileList.actualDOCName}</div>
+                  </td>
+                  <td data-label="">
+                    <div class="slds-truncate" >{fileList.description}</div>
+                  </td>
+                  <td data-label="">
+                    <div class="slds-truncate" >{fileList.createdDate}</div>
+                  </td>
+                  <td data-label="">
+                    <div class="slds-truncate" >{fileList.docStatus}</div>
+                  </td>
+                </tr>         
+              </template>
+            </tbody>
+            </table>
+        </div>
+    </div>
+    
+  </div>
+  <template if:true={isShowModal}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small slds-backdrop slds-backdrop_open" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">File Upload - {documentNameForFile}</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+          <lightning-input 
+                type="file" 
+                label="Attchment" 
+                class="slds-p-right_small"
+                accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf, .jpg"
+                onchange={openfileUpload}
+          >
+          </lightning-input><br/>
+          Document : <b>{documentNameForFile}</b><br/><br/>
+          <lightning-textarea label="Comments" class="slds-p-right_small" onchange={handleComments}></lightning-textarea>
+        </div>
+        <footer class="slds-modal__footer">
+          <template if:true={isClose}>
+            <button class="slds-button slds-button_brand" onclick={handleClose}>Close</button>
+          </template>
+          <template if:false={isClose}>
+            <button class="slds-button slds-button_neutral" onclick={handleClose}>Cancel</button>
+            <button class="slds-button slds-button_brand" onclick={handleSave}>Save</button>
+          </template>
+          
+        </footer>
+      </div>
+    </section>
+  </template>
+</template>

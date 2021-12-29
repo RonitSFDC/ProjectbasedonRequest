@@ -1,0 +1,28 @@
+<template>
+  <template if:true={isShowModal}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small slds-backdrop slds-backdrop_open" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">File Upload - {documentName}</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+          <lightning-input 
+                type="file" 
+                label="Replace" 
+                class="slds-p-right_small"
+                accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf, .jpg"
+                onchange={openfileUpload}
+          >
+          </lightning-input>
+          <lightning-textarea label="Comments" class="slds-p-right_small" onchange={handleComments}></lightning-textarea>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" onclick={hide}>Cancel</button>
+          <button class="slds-button slds-button_brand" onclick={handleSave}>Save</button>
+        </footer>
+      </div>
+    </section>
+    <div class=""></div>
+  </template>
+  
+</template>

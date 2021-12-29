@@ -1,0 +1,129 @@
+<template>
+    <template if:true={showModal}>
+        <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_medium slds-backdrop slds-backdrop_open"
+            >
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Hold / Delay Commission - {oppRecord.Name}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <div class="slds-section slds-is-open">
+                            <h3 class="slds-section__title slds-theme_shade">
+                                <span class="slds-truncate slds-p-horizontal_small" title="Deduction Details">Deduction Details</span>
+                            </h3>
+                            <div aria-hidden="false" class="slds-section__content">
+                                <div class="slds-grid ">
+                                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                        <lightning-combobox 
+                                            label="Agency Commission Deduction Type" 
+                                            options={acdTypeOptions} 
+                                            value={oppRecord.Agency_Commission_Deduction_Type__c} 
+                                            onchange={handleACDTypeChange}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                        <lightning-input 
+                                            type="text" 
+                                            variant="standard" 
+                                            name="name" 
+                                            label="Agency Commission Deduction"
+                                            value={oppRecord.AgencyCommissionDeduction__c}
+                                            onchange={handleACDChange}
+                                          >
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-section slds-is-open">
+                            <h3 class="slds-section__title slds-theme_shade">
+                                <span class="slds-truncate slds-p-horizontal_small" title="Hold / Delay Details">Hold / Delay Details</span>
+                            </h3>
+                            <div aria-hidden="false" class="slds-section__content">
+                                <div class="slds-grid ">
+                                    <div class="slds-col slds-size_1-of-2 slds-var-p-around_x-small">
+                                        <lightning-combobox 
+                                            label="Delay Agency Commission" 
+                                            options={delayAgencyCommOptions} 
+                                            value={oppRecord.DelayAgencyCommission__c}
+                                            onchange={handleDelayAgencyCommChange}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 slds-var-p-around_x-small">
+                                        <lightning-combobox 
+                                            data-name="DAC till"
+                                            label="Delay Agency Commission Till" 
+                                            options={delayAgencyCommTillOptions} 
+                                            value={oppRecord.DelayAgencyCommissionTill__c}
+                                            onchange={handleDelayAgencyCommTill}>
+                                        </lightning-combobox>
+                                    </div>
+                                </div>
+                                <div class="slds-grid ">
+                                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                        <lightning-combobox 
+                                            data-name="DAC Half Till"
+                                            label="Delay Agency Commission 2nd Half	" 
+                                            options={dACHalfTillOptions} 
+                                            value={oppRecord.Delay_Agency_Commission_2nd_Half_Till__c}
+                                            onchange={handleDACHalfTill}
+                                            disabled={DACHalfDisable}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                        <lightning-textarea 
+                                            data-name="inputname" 
+                                            label="Requester Comments" 
+                                            value={oppRecord.Requester_Comments__c}
+                                            onchange={handleReqComm}
+                                          >
+                                        </lightning-textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-section slds-is-open">
+                            <h3 class="slds-section__title slds-theme_shade">
+                                <span class="slds-truncate slds-p-horizontal_small" title="Attachments">Attachments</span>
+                            </h3>
+                            <lightning-file-upload
+                                name="fileUploader"
+                                accept=".csv,.doc,.xsl,.pdf,.png,.jpg,.jpeg"
+                                record-id={recordId}
+                                onuploadfinished={handleUploadFinished}
+                                multiple>
+                            </lightning-file-upload>
+                            <template if:true={showFiles}>
+                              <lightning-card title="Uploaded Files" icon-name="custom:custom14">
+                                  <ul class="slds-var-m-around_medium">
+                                      <template iterator:it={uploadedFiles}>
+                                          <div key={it.value.name} class="slds-grid slds-gutters slds-var--top_xx-small">
+                                              <div class="slds-col slds-size_1-of-3">
+                                                  <li key={it.value.documentId}>
+                                                      {it.value.name}
+                                                  </li>
+                                              </div>
+                                              <div class="slds-col slds-size_2-of-3">
+                                                  <lightning-button key={it.value.name} variant="destructive" value={it.value.documentId} label="Delete" onclick={handleDeleteFile} class="slds-m-left_x-small"></lightning-button>
+                                             </div>
+                                          </div>
+                                      </template>
+                                  </ul>
+                              </lightning-card>
+                          </template>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" label="Save" type="submit" onclick={handleSubmitModal}></lightning-button>&nbsp;
+                    <lightning-button variant="brand" label="Close" onclick={hide}></lightning-button>
+                    </footer>
+                </div>
+        </section>
+    </template>
+</template>

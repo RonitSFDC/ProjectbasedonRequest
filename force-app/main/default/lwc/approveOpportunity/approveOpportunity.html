@@ -1,0 +1,138 @@
+<template>
+
+    <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+    </div>
+
+    <div class="slds-p-around_small">
+
+        <div class="slds-m-around_small" style="text-align:center;">
+           
+            <lightning-button label="Approve" title="Approve"  onclick={approveOpportunity} class="slds-m-left_x-small" if:false={blnCheck}></lightning-button>
+            <lightning-button label="Reject" title="Reject" onclick={rejectOpportunity} class="slds-m-left_x-small" if:false={blnCheck}></lightning-button> 
+            <lightning-button label="Raise/Update Tasks" title="Raise/Update Tasks" onclick={raiseTasks} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Update Security Clearance Details/Docs" title="Update Security Clearance Details/Docs" onclick={scMandatoryInfo} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Request for Special Approvals" title="Request for Special Approvals" onclick={raiseSplApprovals} class="slds-m-left_x-small" if:false={oppRecord.Compliance_Process__c}></lightning-button>
+            <lightning-button label="Hold/Delay Commission" title="Hold/Delay Commission" class="slds-m-left_x-small" onclick={handleHoldDelay}></lightning-button>
+        </div>   
+        <div class="slds-section slds-is-open">
+            <h3 class="slds-section__title slds-theme_shade">
+            <span class="slds-truncate slds-p-horizontal_small" title="Approval Comments">Approval Comments</span>
+            </h3>
+            <div aria-hidden="false" class="slds-section__content">
+
+                <div class="slds-grid ">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox onchange={handleOrderEventChange} required="true" label="Order Event" options={orderEventsOptions} value={oppRecord.Order_Event__c}></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="Order Source" onchange={handleOrderSourceChange} required="true"  options={orderSourcesOptions} value={oppRecord.Order_Source__c}></lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="LR Waiver" onchange={handleLRWaiverChange} options={lrWaiversOptions} value={oppRecord.LR_waiver__c}></lightning-combobox>
+                        
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="SPA Signed" onchange={handleSPASingedChange} options={spaSignedsOptions} value={oppRecord.SPA_Signed__c}></lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="SPA Printed" onchange={handleSPAPrintedChange} options={spaPrintedOptions} value={oppRecord.SPA_Printed__c}></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="Reason of Rejection" onchange={handleCMReasonOfRejection} options={cmReasonOfRejectionsOptions} value={oppRecord.cm_Reason_of_Rejection__c}></lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-combobox label="PDC Collected" onchange={handlePDCollected} options={pdcCollectedOptions} value={oppRecord.PDC_Collected__c}></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <label class="slds-form-element__label">Documentd OK</label>
+                        <lightning-input type="checkbox" onchange={handleDocumentOk} checked={oppRecord.Documents_OK__c}></lightning-input>
+                    </div>
+                </div> 
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                        <lightning-textarea label="CM Approval Comments" onchange={handleCMApprovalComments} value={oppRecord.cm_Approval_Comments__c}></lightning-textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- table-->
+        <template for:each={tableData} for:item="item" for:index="index1">
+
+            <div class="slds-section slds-is-open" key={item.checklistType}>
+                <h3 class="slds-section__title slds-theme_shade">
+                <span class="slds-truncate slds-p-horizontal_small"  title={item.checklistType}>{item.checklistType}</span>
+                </h3>
+                <div aria-hidden="false" class="slds-section__content">
+    
+                    <template for:each={item.checklistSections} for:item="section" for:index="index2">
+                        <div key={section.sectionName} style="background: rgb(0, 68, 135); color: rgb(255, 255, 255); font-size: 12px; padding: 5px;">
+                            {section.sectionName}     
+                        </div>
+    
+                        <table key={section.sectionName} class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+                            <thead>
+                              <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                  <div class="slds-truncate" title="Type">Type</div>
+                                </th>
+                                <th class="" scope="col" style="width:10%">
+                                  <div class="slds-truncate" title="Available">Available</div>
+                                </th>
+                                <th class="" scope="col" style="width:10%">
+                                    <div class="slds-truncate" title="Raise A Task">Raise A Task</div>
+                                  </th>
+                                <th class="" scope="col" style="width:30%">
+                                  <div class="slds-truncate" title="Remarks">Remarks</div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+
+                                <template for:each={section.checklistItems} for:item="checklistItem" for:index="index3">
+    
+                                    <tr class="slds-hint-parent" key={section.sectionName}>
+                                        <td data-label="" >
+                                            {checklistItem.Checklist_Name__c}
+                                        </td>
+                                        <td data-label="">
+                                            <lightning-input type="checkbox" data-index1={index1} data-index2={index2} data-index3={index3} onchange={handleAvailableChange} checked={checklistItem.Available__c}></lightning-input>
+                                        </td>
+                                        <td data-label="">
+                                            <lightning-input type="checkbox" data-index1={index1} data-index2={index2} data-index3={index3} onchange={handleRaiseATaskChange} checked={checklistItem.Raise_a_Task__c}></lightning-input>
+                                        </td>
+                                        <td data-label="">
+                                            <lightning-textarea label="" data-index1={index1} data-index2={index2} data-index3={index3} onchange={handleCommentsChange} value={checklistItem.Comments__c}></lightning-textarea>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>   
+                        </table>        
+                    </template>
+                </div>
+            </div>    
+        </template>
+        <!-- table end-->
+
+        <div class="slds-m-around_small" style="text-align:center;">
+            <lightning-button label="Approve" title="Approve" if:false={blnCheck} onclick={approveOpportunity} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Reject" title="Reject" if:false={blnCheck} onclick={rejectOpportunity} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Raise/Update Tasks" title="Raise/Update Tasks" onclick={raiseTasks} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Update Security Clearance Details/Docs" title="Update Security Clearance Details/Docs" onclick={scMandatoryInfo} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button label="Request for Special Approvals" title="Request for Special Approvals" onclick={raiseSplApprovals} class="slds-m-left_x-small" if:false={oppRecord.Compliance_Process__c}></lightning-button>
+            <lightning-button label="Hold/Delay Commission" title="Hold/Delay Commission" class="slds-m-left_x-small" onclick={handleHoldDelay}></lightning-button>
+        </div>   
+    </div>
+    <c-holdand-delay-commission-modal record-id={recordId}></c-holdand-delay-commission-modal> 
+
+
+</template>
